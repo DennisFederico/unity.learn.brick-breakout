@@ -12,11 +12,11 @@ public class HighScoreManager : MonoBehaviour {
     public static HighScoreManager Instance { get; private set; }
 
     static HighScores.PlayerScore[] noScoreData = new HighScores.PlayerScore[] {
-        new HighScores.PlayerScore("THIS GAME", 0),
-        new HighScores.PlayerScore("ROCKS!!!!", 0),
-        new HighScores.PlayerScore("", 0),
-        new HighScores.PlayerScore("NO HIGHSCORE YET!!!", 0),
-        new HighScores.PlayerScore("START A NEW GAME", 0)
+        // new HighScores.PlayerScore("THIS GAME", 0),
+        // new HighScores.PlayerScore("ROCKS!!!!", 0),
+        // new HighScores.PlayerScore("", 0),
+        // new HighScores.PlayerScore("NO HIGHSCORE YET!!!", 0),
+        // new HighScores.PlayerScore("START A NEW GAME", 0)
     };
 
     void Awake() {
