@@ -9,7 +9,10 @@ using UnityEditor;
 
 public class ScenesManager : MonoBehaviour {
 
+    public enum GameDifficultyEnum { EASY, MEDIUM, HARD }
     public static ScenesManager Instance { get; private set; }
+
+    public GameDifficultyEnum GameDifficulty { get; private set; }
 
     // Start is called before the first frame update
     void Awake() {
@@ -20,10 +23,15 @@ public class ScenesManager : MonoBehaviour {
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        GameDifficulty = GameDifficultyEnum.EASY;
 
         if (SceneManager.GetActiveScene().name.Equals("Start")) {
             LoadMenu();
         }
+    }
+
+    public void ChangeGameDifficulty(int value) {
+        GameDifficulty = (GameDifficultyEnum) value;
     }
 
     public void LoadMenu() {

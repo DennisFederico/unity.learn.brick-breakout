@@ -13,7 +13,7 @@ public class MainManager : MonoBehaviour {
     public Rigidbody Ball;
 
     public Text ScoreText;
-
+    public Text DifficultyText;
     public Text BestScoreText;
     public GameObject GameOverText;
 
@@ -36,6 +36,7 @@ public class MainManager : MonoBehaviour {
 
     void Start() {
         UpdateScores();
+        UpdateDifficulty();
         StartGame();
     }
 
@@ -46,6 +47,25 @@ public class MainManager : MonoBehaviour {
             "Best Score : NO SCORE YET!";
         BestScoreText.text = text;
         HighScoreManager.Instance.InitHighSoresDisplay();
+    }
+
+    void UpdateDifficulty() {
+        DifficultyText.text = $"Difficulty: {ScenesManager.Instance.GameDifficulty.ToString()}";
+        switch (ScenesManager.Instance.GameDifficulty) {
+            case ScenesManager.GameDifficultyEnum.EASY: {
+                LineCount = 4;
+                break;
+            }
+            case ScenesManager.GameDifficultyEnum.MEDIUM: {
+                LineCount = 6;
+                break;
+            }
+            case ScenesManager.GameDifficultyEnum.HARD: {
+                LineCount = 8;
+                break;
+            }
+            default: break;
+        }
     }
 
     // Start is called before the first frame update
