@@ -21,7 +21,6 @@ public class ScenesManager : MonoBehaviour {
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        Debug.Log($"{SceneManager.GetActiveScene().name}");
         if (SceneManager.GetActiveScene().name.Equals("Start")) {
             LoadMenu();
         }

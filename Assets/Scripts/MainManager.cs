@@ -13,12 +13,18 @@ public class MainManager : MonoBehaviour {
     public Rigidbody Ball;
 
     public Text ScoreText;
+
+    public Text BestScoreText;
     public GameObject GameOverText;
+
+    public GameObject NewHighScorePanel;
+
+    public GameObject HighScorePanel;
 
     private bool m_Started = false;
     private int m_Points;
-
     private bool m_GameOver = false;
+    private bool m_CreateHighScore = false;
 
     void Awake() {
         if (Instance != null && Instance != this) {
@@ -29,16 +35,17 @@ public class MainManager : MonoBehaviour {
     }
 
     void Start() {
-        
+        UpdateScores();
         StartGame();
     }
 
-    void DisplayHighestScore() {
+    void UpdateScores() {
         HighScores.PlayerScore highestScore = HighScoreManager.Instance.GetHighestScore();
-        if (highestScore != null) {
-            ScoreText.text = $"Best Score : {highestScore.playerName} : {highestScore.playerScore}";
-        }
-        ScoreText.text = "Best Score : NO SCORE YET!";
+        string text = highestScore != null ?
+            $"Best Score : {highestScore.playerName} : {highestScore.playerScore}" :
+            "Best Score : NO SCORE YET!";
+        BestScoreText.text = text;
+        HighScoreManager.Instance.InitHighSoresDisplay();
     }
 
     // Start is called before the first frame update
@@ -68,7 +75,7 @@ public class MainManager : MonoBehaviour {
                 Ball.transform.SetParent(null);
                 Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
             }
-        } else if (m_GameOver) {
+        } else if (m_GameOver && !m_CreateHighScore) {
             if (Input.GetKeyDown(KeyCode.Space)) {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
@@ -82,41 +89,28 @@ public class MainManager : MonoBehaviour {
 
     public void GameOver() {
         m_GameOver = true;
-        GameOverText.SetActive(true);
+        if (HighScoreManager.Instance.IsHighScore(m_Points)) {
+            NewHighScorePanel.SetActive(true);
+            m_CreateHighScore = true;
+        } else {
+            GameOverText.SetActive(true);
+        }
+        HighScorePanel.SetActive(true);
     }
 
-    // void SaveHighScores() {
+    public void NewHighScore(string playerName) {
+        HighScoreManager.Instance.AddHighScore(playerName, m_Points);
+        HighScoreManager.Instance.InitHighSoresDisplay();
+        NewHighScorePanel.SetActive(false);
+        GameOverText.SetActive(true);
+        m_CreateHighScore = false;
+    }
 
-    //     HighScores.PlayerScore[] scores = new HighScores.PlayerScore[] {
-    //         new HighScores.PlayerScore("Dennis", 500),
-    //         new HighScores.PlayerScore("Danella", 300),
-    //         new HighScores.PlayerScore("Danella", 50),
-    //         new HighScores.PlayerScore("Danella", 600),
-    //         new HighScores.PlayerScore("Danella", 100),
-    //         new HighScores.PlayerScore("Danella", 700),
-    //         new HighScores.PlayerScore("Danella", 70)
-    //     };
+    public void ExitGame() {
+        ScenesManager.Instance.ExitGame();
+    }
 
-    //     HighScores highScores = new HighScores();
-    //     foreach (HighScores.PlayerScore ps in scores) {
-    //         highScores.AddPlayerScore(ps);
-    //         Debug.Log($"adding {JsonUtility.ToJson(ps)}");
-    //     }
-
-    //     string json = JsonUtility.ToJson(highScores);
-    //     Debug.Log($"Generated document -> {json}");
-    //     File.WriteAllText($"{Application.persistentDataPath}/highscores.json", json);
-    //     Debug.Log($"Save data persisted to {Application.persistentDataPath}/highscores.json");
-    // }
-
-    // HighScores LoadHighScores() {
-    //     string path = $"{Application.persistentDataPath}/highscores.json";
-    //     if (File.Exists(path)) {
-    //         string json = File.ReadAllText(path);
-    //         Debug.Log($"Read document -> {json}");
-    //         HighScores scores = JsonUtility.FromJson<HighScores>(json);
-    //         return scores;
-    //     }
-    //     return new HighScores();
-    // }
+    public void GameMenu() {
+        ScenesManager.Instance.LoadMenu();
+    }
 }

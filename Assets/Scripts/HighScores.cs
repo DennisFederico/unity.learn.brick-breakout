@@ -43,5 +43,7 @@ public class HighScores {
 
         public string playerName;
         public int playerScore;
+
+        public static PlayerScore EMPTY = new PlayerScore("", 0);
     }
 }

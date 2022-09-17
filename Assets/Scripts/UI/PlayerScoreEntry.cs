@@ -19,7 +19,7 @@ public class PlayerScoreEntry : MonoBehaviour {
 
     public void SetValues(HighScores.PlayerScore score) {
         playerName.text = score.playerName;
-        playerScore.text = $"{score.playerScore}";
+        playerScore.text = score.playerScore <= 0 ? "" : $"{score.playerScore}";
     }
 
     public void ResetValues() {

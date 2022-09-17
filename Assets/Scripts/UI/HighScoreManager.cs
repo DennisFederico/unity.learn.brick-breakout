@@ -14,7 +14,7 @@ public class HighScoreManager : MonoBehaviour {
     static HighScores.PlayerScore[] noScoreData = new HighScores.PlayerScore[] {
         new HighScores.PlayerScore("THIS GAME", 0),
         new HighScores.PlayerScore("ROCKS!!!!", 0),
-        new HighScores.PlayerScore("---------", 0),
+        new HighScores.PlayerScore("", 0),
         new HighScores.PlayerScore("NO HIGHSCORE YET!!!", 0),
         new HighScores.PlayerScore("START A NEW GAME", 0)
     };
@@ -27,6 +27,14 @@ public class HighScoreManager : MonoBehaviour {
         Instance = this;
         DontDestroyOnLoad(gameObject);
         highScores = LoadHighScores();
+        //highScores = MockHighScores();
+    }
+
+    static HighScores MockHighScores() {
+        HighScores mockScores = new HighScores();
+        mockScores.AddPlayerScore("Player1", 500);
+        mockScores.AddPlayerScore("Player5", 100);
+        return mockScores;
     }
 
     static HighScores LoadHighScores() {
@@ -46,7 +54,7 @@ public class HighScoreManager : MonoBehaviour {
         }
     }
 
-    public void DisplayHighScores() {
+    public void InitHighSoresDisplay() {
         PlayerScoreEntry[] playerScoreEntries = GameObject.FindObjectsOfType<PlayerScoreEntry>(true);
         if (playerScoreEntries != null || playerScoreEntries.Length > 0) {
             //Sort entries FIND return order is not deterministic
@@ -58,9 +66,9 @@ public class HighScoreManager : MonoBehaviour {
     }
 
     static void FillHighScoreEntries(HighScores.PlayerScore[] scores, PlayerScoreEntry[] playerScoreEntries) {
-        int numScores = Math.Min(playerScoreEntries.Length, scores.Length);
-        for (int i = 0; i < numScores; i++) {
-            playerScoreEntries[i].SetValues(scores[i]);
+        //int numScores = Math.Min(playerScoreEntries.Length, scores.Length);
+        for (int i = 0; i < playerScoreEntries.Length; i++) {
+            playerScoreEntries[i].SetValues(scores.Length <= i ? HighScores.PlayerScore.EMPTY : scores[i]);
         }
     }
 
@@ -70,6 +78,10 @@ public class HighScoreManager : MonoBehaviour {
 
     public bool IsHighScore(int score) {
         return score > highScores.scoreLevel;
+    }
+
+    public void AddHighScore(string playerName, int score) {
+        highScores.AddPlayerScore(playerName, score);
     }
 
     void OnApplicationQuit() {
