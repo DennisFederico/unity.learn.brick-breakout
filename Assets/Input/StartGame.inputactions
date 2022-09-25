@@ -1,0 +1,34 @@
+{
+    "name": "StartGame",
+    "maps": [
+        {
+            "name": "Game",
+            "id": "2ba8f9f8-9876-43a7-bf99-90638feee84f",
+            "actions": [
+                {
+                    "name": "StartGame",
+                    "type": "Button",
+                    "id": "5b767521-d7b5-48fb-a26b-570182d54c5d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "76077244-4bc5-4e19-8b58-58a685b93e8a",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StartGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

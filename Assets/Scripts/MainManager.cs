@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class MainManager : MonoBehaviour {
 
@@ -54,17 +55,17 @@ public class MainManager : MonoBehaviour {
         DifficultyText.text = $"Difficulty: {ScenesManager.Instance.GameDifficulty.ToString()}";
         switch (ScenesManager.Instance.GameDifficulty) {
             case ScenesManager.GameDifficultyEnum.EASY: {
-                LineCount = 4;
-                break;
-            }
+                    LineCount = 4;
+                    break;
+                }
             case ScenesManager.GameDifficultyEnum.MEDIUM: {
-                LineCount = 6;
-                break;
-            }
+                    LineCount = 6;
+                    break;
+                }
             case ScenesManager.GameDifficultyEnum.HARD: {
-                LineCount = 8;
-                break;
-            }
+                    LineCount = 8;
+                    break;
+                }
             default: break;
         }
     }
@@ -85,23 +86,38 @@ public class MainManager : MonoBehaviour {
         }
     }
 
-    private void Update() {
-        if (!m_Started) {
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                m_Started = true;
-                float randomDirection = Random.Range(-1.0f, 1.0f);
-                Vector3 forceDir = new Vector3(randomDirection, 1, 0);
-                forceDir.Normalize();
+    // private void Update() {
+    //     if (!m_Started) {
+    //         if (Input.GetKeyDown(KeyCode.Space)) {
+    //             m_Started = true;
+    //             float randomDirection = Random.Range(-1.0f, 1.0f);
+    //             Vector3 forceDir = new Vector3(randomDirection, 1, 0);
+    //             forceDir.Normalize();
 
-                Ball.transform.SetParent(null);
-                Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
-            }
+    //             Ball.transform.SetParent(null);
+    //             Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
+    //         }
+    //     } else if (m_GameOver && !m_CreateHighScore) {
+    //         if (Input.GetKeyDown(KeyCode.Space)) {
+    //             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    //         }
+    //     }
+    // }
+
+    void OnStartGame() {
+        if (!m_Started) {
+            m_Started = true;
+            float randomDirection = Random.Range(-1.0f, 1.0f);
+            Vector3 forceDir = new Vector3(randomDirection, 1, 0);
+            forceDir.Normalize();
+
+            Ball.transform.SetParent(null);
+            Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
         } else if (m_GameOver && !m_CreateHighScore) {
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            }
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
+
 
     void AddPoint(int point) {
         m_Points += point;
